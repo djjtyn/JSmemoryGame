@@ -1,70 +1,35 @@
-document.addEventListener('DOMContentLoaded', () => {
+const cards = document.querySelectorAll('.memory-card');
 
-  //card options
-  const cardArray = [
-    {
-      name: 'html',
-      img: 'static/images/html.png'
-    },
-    {
-      name:'css',
-      img: 'static/images/css.png'  
-    },
- 
+let hasFlippedCard = false;
+let firstCard, secondCard
 
-  cardArray.sort(() => 0.5 - Math.random())
+function flipCard(){
+    this.classList.add('flip');
+    if (!hasFlippedCard) {
+        //First click
+        hasFlippedCard = true;
+        firstCard = this;
+    } else {
+        //Second click
+        hasFlippedCard = false;
+        secondCard = this;
+        // Do cards match?
+        checkForMatch();
+    }
+}
 
-  const grid = document.querySelector('.grid')
-  const resultDisplay = document.querySelector('#result')
-  var cardsChosen = []
-  var cardsChosenId = []
-  var cardsWon = []
+function checkForMatch(){
+    if (firstCard.dataset.framework === secondCard.dataset.framework) {
+            //Its a match
+            firstCard.removeEventListener('click', flipcard)
+            secondCard.removeEventListener('click', flipcard)
+        } else {
+            //not a match
+            setTimeout(() => {
+            firstCard.classList.remove('flip');
+            secondCard.classList.remove('flip');
+        }, 1500);
+    }
+}
 
-  //Create the board
-  function createBoard() {
-      for (let i = 0; i < cardArray.length; i++) {
-          var card = document.createElement('img')
-          card.setAttribute('src', 'static/images/button.png')
-          card.setAttribute('data-id', i)
-          card.addEventListener("click", flipCard)
-          grid.appendChild(card)
-      }
-  }
-
-  createBoard();
-  
-  //check for matches
-  function checkForMatch() {
-      var cards = document.querySelectorAll('img')
-      const optionOneId = cardsChosenId[0]
-      const optionTwoId = cardsChosenId[1]
-      if (cardsChosen[0] === cardsChosen[1]) {
-        alert('You found a match')
-        cards[optionOneId].setAttribute('src', 'static/images/white.png')
-        cards[optionTwoId].setAttribute('src', 'static/images/white.png')
-        cardsWon.push(cardsChosen)
-      } else {
-        cards[optionOneId].setAttribute('src', 'static/images/button.png')
-        cards[optionOneId].setAttribute('src', 'static/images/button.png')
-        alert ('Sorry, try again')
-      }
-      cardsChosen = []
-      cardsChosenId = []
-      resultDisplay.textContent = cardsWon.length
-      if (cardsWon.length === cardArray.length/2) {
-        resultDisplay.textContent = 'Congratulations, you found all the matches!'
-      }
-  }
-
-  //flip your card
-  function flipCard() {
-      var cardId = this.getAttribute('data-id')
-      cardsChosen.push(cardArray[cardId].name)
-      cardsChosenId.push(cardId)
-      this.setAttribute("src", cardArray[cardId].img)
-      if (cardsChosen.length === 2) {
-          setTimeout(checkForMatch, 500)
-      }
-  }
-
-})
+cards.forEach(card => card.addEventListener('click', flipCard));
