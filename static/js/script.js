@@ -10,31 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
       name:'css',
       img: 'static/images/css.png'  
     },
-    {
-      name:'blank',
-      img: 'static/images/button.png'  
-    },
-    {
-      name:'django',
-      img: 'static/images/django.png'  
-    },
-    {
-      name:'flask',
-      img: 'static/images/flask.png'  
-    },
-    {
-      name:'javascript',
-      img: 'static/images/js.png'  
-    },
-    {
-      name:'python',
-      img: 'static/images/python.png'  
-    },
-    {
-      name:'white',
-      img: 'static/images/white.png'  
-    },
-  ]  
+ 
 
   cardArray.sort(() => 0.5 - Math.random())
 
